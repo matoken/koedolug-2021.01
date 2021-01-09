@@ -28,10 +28,13 @@ image::map.jpg[background, size=cover]
 
 == 最近の発表
 
-* link:https://www.edocr.com/v/wallj4zw/matoken/[常駐アプリ等を軽く出来ないかな?な試み]
-** link:https://koedolug.connpass.com/event/195807/[小江戸らぐ 12月のオフな集まり(第221回)] 2020-12-12
-* link:https://www.edocr.com/v/3al6wy4p[誰でもファイルアップロード]
-** link:https://kagolug.connpass.com/event/197081/[鹿児島Linux勉強会 2020.12(オンライン開催)] 2020-12-26
+* 「link:https://www.edocr.com/v/wallj4zw/matoken/[常駐アプリ等を軽く出来ないかな?な試み]」 link:https://koedolug.connpass.com/event/195807/[小江戸らぐ 12月のオフな集まり(第221回)] 2020-12-12
+** 教えて貰った RamboxをAppImage版で試す．無料版で99+のサービスに対応，ただしRAMはたくさん必要  +
+** Pidgen -> RAM 90MBほどと少ないがDiscordの動きがおかしい
+* 「link:https://www.edocr.com/v/3al6wy4p[誰でもファイルアップロード]」 link:https://kagolug.connpass.com/event/197081/[鹿児島Linux勉強会 2020.12(オンライン開催)] 2020-12-26
+** 主にDroopyの紹介
+** このときreportbugしたものが昨日降りてきた :)
+
 
 == 鹿児島らぐ
 
@@ -108,7 +111,7 @@ apt update && apt update しておけばいいので便利 :)
 image:polkit.jpg[]
 
 * GNOME, KDE, LXDE, LXQt, MATE, Xfce 等では認証エージェントが導入されている
-* 今回はawesome wmで入っていないので要設定
+* 今回はawesome wmで設定されていないので要設定
 
 === Polkit設定(大抵の環境では必要ない)
 
@@ -141,7 +144,7 @@ Please read documentation on why this is important
 
 ----
 
-<1> 空のディスクイメージ作成(スパースファイルだとファイル付が小さいと怒られる)
+<1> 空のディスクイメージ作成(スパースファイルだとzuluCrypt-cliにファイルサイズが小さいと怒られる)
 <2> VeraCrypt形式(exfat)にする
 
 == cliでVeraCryptボリュームマウント
@@ -162,6 +165,11 @@ SUCCESS: volume closed successfully
 <2> マウント確認
 <3> アンマウント
 <4> クローズ
+
+== zuluMount-gui
+
+* VeraCryptと同じような使い勝手
+* 最近の環境ではsquashfs等のボリュームがたくさん出てきて邪魔
 
 == zuluMount-cliでマウント
 
@@ -200,6 +208,7 @@ SUCCESS: volume closed successfully
 
 * ディストリビューションパッケージで完結するので管理が楽
 * 複数形式に対応しているので便利
+* /etc/fstab, /etc/crypttab にも対応
 * 少し試した限りではVeraCryptとの互換性も問題なさそう
 
 == おまけ tc-play
