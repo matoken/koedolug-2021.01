@@ -1,0 +1,222 @@
+=  VeraCryptをzuluCryptで
+Kenichiro Matohara(matoken) <maroken@kagolug.org>
+:revnumber: 0.9
+:revdate: 2021-01-01(Sat)
+:revremark: 小江戸らぐ 01月のオフな集まり「{doctitle}」
+:homepage: https://matoken.org/
+:imagesdir: resources
+:data-uri:
+:backend: revealjs
+:revealjs_theme: serif
+:customcss: resources/my-css.css
+:revealjs_slideNumber: c/t
+:title-slide-transition: none
+:icons: font
+:revealjs_hash: true
+:revealjs_center: true
+:revealjs_autoPlayMedia: true
+:revealjs_transition: false  
+:revealjs_transitionSpeed: fast
+
+== link:https://matoken.org[Kenichiro Matohara(matoken) https://matoken.org]
+
+image::map.jpg[background, size=cover]
+
+* 南隅から参加(鹿児島の右下)
+* 好きなLinuxディストリビューションはDebian
+* お仕事募集 mailto:work@matohara.org
+
+== 最近の発表
+
+* link:https://www.edocr.com/v/wallj4zw/matoken/[常駐アプリ等を軽く出来ないかな?な試み]
+** link:https://koedolug.connpass.com/event/195807/[小江戸らぐ 12月のオフな集まり(第221回)] 2020-12-12
+* link:https://www.edocr.com/v/3al6wy4p[誰でもファイルアップロード]
+** link:https://kagolug.connpass.com/event/197081/[鹿児島Linux勉強会 2020.12(オンライン開催)] 2020-12-26
+
+== 鹿児島らぐ
+
+* 次回 2021-01-31(sun)
+link:https://kagolug.connpass.com/event/200913/[鹿児島Linux勉強会 2021.01(オンライン開催)]
+* オープンソースカンファレンス2021 Springにも参加予定
+
+== VeraCryptをzuluCryptで
+
+== TrueCryptとVeraCrypt
+
+* TrueCrypt
+** マルチプラットホームの暗号化ソフトウェア
+** 開発は終了
+** ソースは公開されているが独自ライセンス(TrueCrypt License 3.0)
+* VeraCrypt
+** TrueCryptのフォーク，TrueCryptの脆弱性を修正して開発が続けられている
+** 現在はTrueCryptとの互換性は失われている
+** Apache License 2.0だが，TrueCryptから引き継がれた部分はTrueCrypt License 3.0
+
+LinuxではUSBメモリなどの持ち運びデバイスに便利
+
+// CipherShed
+
+== VeraCrypt導入例
+
+----
+$ wget https://launchpad.net/veracrypt/trunk/1.24-update7/+download/veracrypt-1.24-Update7-Debian-10-amd64.deb \
+https://launchpad.net/veracrypt/trunk/1.24-update7/+download/veracrypt-1.24-Update7-Debian-10-amd64.deb.sig \
+https://www.idrix.fr/VeraCrypt/VeraCrypt_PGP_public_key.asc
+$ gpg --import ./VeraCrypt_PGP_public_key.asc
+$ gpg --verify ./veracrypt-1.24-Update7-Debian-10-amd64.deb.sig 
+gpg: assuming signed data in './veracrypt-1.24-Update7-Debian-10-amd64.deb'
+gpg: Signature made Sun 09 Aug 2020 03:21:40 AM JST
+gpg:                using RSA key 5069A233D55A0EEB174A5FC3821ACD02680D16DE
+gpg: Good signature from "VeraCrypt Team (2018 - Supersedes Key ID=0x54DDD393) <veracrypt@idrix.fr>" [unknown]
+gpg: WARNING: This key is not certified with a trusted signature!
+gpg:          There is no indication that the signature belongs to the owner.
+Primary key fingerprint: 5069 A233 D55A 0EEB 174A  5FC3 821A CD02 680D 16DE
+$ sudo apt install ././veracrypt-1.24-Update7-Debian-10-amd64.deb
+----
+
+* リポジトリがないのでアップデートをチェックしておいて毎回導入作業が必要
+* 独自ライセンスが含まれるのですべて書き換わるまでDebianに取り込まれることはない
+* めんどい
+
+== zuluCrypt
+
+* VeraCryptを含む複数の暗号化形式に対応したソフトウェア
+** PLAIN dm-crypt, LUKS, TrueCrypt, VeraCrypt, BitLocker
+* zuluMountは更に encfs, gocryptfs, securefs, ecryptfs, cryfs が使える
+* ライセンス GPLv2+
+* Debianではstretchからmainアーカイブに存在(Ubuntuは16.04+)
+
+----
+zulucrypt-cli - tool for encrypting volumes
+zulucrypt-gui - graphical front end for zulucrypt-cli
+zulumount-cli - tool that manages encrypted volumes
+zulumount-gui - graphical front end for zulumount-cli
+zulupolkit - tool to execute privileged operations
+zulusafe-cli - cli that manages encrypted volumes
+----
+
+== 導入
+
+----
+$ sudo apt install zulucrypt-gui zulucrypt-cli
+----
+
+apt update && apt update しておけばいいので便利 :)
+
+== 認証エラー
+
+image:polkit.jpg[]
+
+* GNOME, KDE, LXDE, LXQt, MATE, Xfce 等では認証エージェントが導入されている
+* 今回はawesome wmで入っていないので要設定
+
+=== Polkit設定(大抵の環境では必要ない)
+
+----
+$ sudo apt install ukui-polkit <1>
+$ /usr/lib/x86_64-linux-gnu/ukui-polkit/polkit-ukui-authentication-agent-1 & <2>
+$ vi ~/.config/awesome/rc.lua <3>
++awful.util.spawn_with_shell("~/.config/awesome/bin/run_once.sh /usr/lib/x86_64-linux-gnu/ukui-polkit/polkit-ukui-authentication-agent-1")
+----
+
+<1> 認証エージェントの導入
+<2> 認証エージェントの起動
+<3> 自動起動するようにしておく
+
+== zuluCrypt-gui
+
+* VeraCryptと同じような使い勝手
+
+== cliでVeraCryptボリューム作成
+
+----
+$ dd if=/dev/zero of=./vera bs=1M count=100 <1>
+$ sudo zuluCrypt-cli -c -d ./vera -k -z exfat -t vcrypt <2>
+Enter passphrase: 
+Re enter passphrase: 
+SUCCESS: Volume created successfully
+
+Creating a backup of the "vcrypt" volume header is strongly adviced.
+Please read documentation on why this is important
+
+----
+
+<1> 空のディスクイメージ作成(スパースファイルだとファイル付が小さいと怒られる)
+<2> VeraCrypt形式(exfat)にする
+
+== cliでVeraCryptボリュームマウント
+
+----
+$ sudo zuluCrypt-cli -o -d ./vera -t vera <1>
+Enter passphrase: 
+SUCCESS: tcrypt volume opened successfully
+volume mounted at: /run/media/private/root/vera
+$ mount | grep vera <2>
+/dev/mapper/zuluCrypt-0-NAAN-vera-3248940642 on /run/media/private/root/vera type exfat (rw,nosuid,nodev,relatime,fmask=0111,dmask=0000,allow_utime=0022,iocharset=utf8,errors=remount-ro)
+$ sudo umount /run/media/private/root/vera <3>
+$ sudo zuluCrypt-cli -q -d ./vera <4>
+SUCCESS: volume closed successfully
+----
+
+<1> ボリュームのオープンとマウント
+<2> マウント確認
+<3> アンマウント
+<4> クローズ
+
+== zuluMount-cliでマウント
+
+----
+$ sudo zuluMount-cli -m -d ./vera -t vera -z vera <1>
+Enter passphrase: 
+SUCCESS: tcrypt volume opened successfully
+volume mounted at: /run/media/private/root/vera
+$ mount | grep vera <2>
+/dev/mapper/zuluCrypt-0-NAAN-vera-3248940642 on /run/media/private/root/vera type exfat (rw,nosuid,nodev,relatime,fmask=0111,dmask=0000,allow_utime=0022,iocharset=utf8,errors=remount-ro)
+$ sudo zuluMount-cli -u -d ./vera <3>
+SUCCESS: volume closed successfully
+----
+
+<1> ボリュームのオープンとマウント
+<2> マウント確認
+<3> アンマウント
+
+// NOTE: アンマウント後にディレクトリが残っていることがある?
+
+////
+* `-m` マウントする
+* `-d` 暗号化ボリュームファイル
+* `-t` 暗号化形式
+* `-z` マウント名
+////
+
+== 問題
+
+* zuluCrypt/zuluMount-cliではsudoを使っていて使いづらい
+* git版はpolkit経由で動く
+* 多分userで使う方法はある
+
+
+== zuluCryptでVeraCrypt利用
+
+* ディストリビューションパッケージで完結するので管理が楽
+* 複数形式に対応しているので便利
+* 少し試した限りではVeraCryptとの互換性も問題なさそう
+
+== おまけ tc-play
+
+link:https://github.com/bwalex/tc-play[bwalex/tc-play: Free and simple TrueCrypt/VeraCrypt Implementation based on dm-crypt]
+
+* 更に別のTrueCrypt実装
+* BSDライセンス
+* VeraCryptにも対応(3.0+)
+** Debianのパッケージ(link:https://tracker.debian.org/pkg/tcplay[tcplay])はlink:https://packages.debian.org/search?searchon=sourcenames&keywords=tcplay[1.1-6]で非対応
+** reportbugした
+
+== 奥付
+
+* 発表
+** link:https://koedolug.connpass.com/event/198954/[小江戸らぐ 1月のオフな集まり(第222回)] 2021-01-09(sat)
+* 発表者
+** link:https://matoken.org/[Kenichiro Matohara(matoken)]
+* ライセンス
+** CC BY-NC-SA 4.0
