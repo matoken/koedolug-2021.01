@@ -18,6 +18,13 @@ Kenichiro Matohara(matoken) <maroken@kagolug.org>
 :revealjs_transition: false  
 :revealjs_transitionSpeed: fast
 
+== !
+
+image:20210101_19:01:17-105001.jpg[]
+
+`$ apt --color moo moo 2>/dev/null | sed -e 's/Have you mooed today?/Happy MOO Year!/'`  +
+link:https://matoken.org/blog/2019/04/02/april-fools-cow-from-apt-apt-get/[apt/apt-get のエイプリルフール牛さん – matoken's meme]
+
 == link:https://matoken.org[Kenichiro Matohara(matoken) https://matoken.org]
 
 image::map.jpg[background, size=cover]
@@ -29,8 +36,8 @@ image::map.jpg[background, size=cover]
 == 最近の発表
 
 * 「link:https://www.edocr.com/v/wallj4zw/matoken/[常駐アプリ等を軽く出来ないかな?な試み]」 link:https://koedolug.connpass.com/event/195807/[小江戸らぐ 12月のオフな集まり(第221回)] 2020-12-12
-** 教えて貰った RamboxをAppImage版で試す．無料版で99+のサービスに対応，ただしRAMはたくさん必要  +
-** Pidgen -> RAM 90MBほどと少ないがDiscordの動きがおかしい
+** 教えて貰ったlink:https://rambox.pro/[Rambox]をAppImage版で試す．無料版で99+, 有料版で600+のサービスに対応，ただしRAMはたくさん必要  +
+** Pidgen(purple) -> RAM 90MBほどと消費リソースは少ないがDiscordの動きがおかしい
 * 「link:https://www.edocr.com/v/3al6wy4p[誰でもファイルアップロード]」 link:https://kagolug.connpass.com/event/197081/[鹿児島Linux勉強会 2020.12(オンライン開催)] 2020-12-26
 ** 主にDroopyの紹介
 ** このときreportbugしたものが昨日降りてきた :)
@@ -199,7 +206,7 @@ SUCCESS: volume closed successfully
 
 == 問題
 
-* zuluCrypt/zuluMount-cliではsudoを使っていて使いづらい
+* zuluCrypt-cli/zuluMount-cliではsudoを使っていて使いづらい
 * git版はpolkit経由で動く
 * 多分userで使う方法はある
 
@@ -219,7 +226,7 @@ link:https://github.com/bwalex/tc-play[bwalex/tc-play: Free and simple TrueCrypt
 * BSDライセンス
 * VeraCryptにも対応(3.0+)
 ** Debianのパッケージ(link:https://tracker.debian.org/pkg/tcplay[tcplay])はlink:https://packages.debian.org/search?searchon=sourcenames&keywords=tcplay[1.1-6]で非対応
-** reportbugした
+** link:https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=979617[reportbug]した
 
 == 奥付
 
