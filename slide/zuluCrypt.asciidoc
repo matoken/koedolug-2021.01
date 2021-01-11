@@ -1,6 +1,6 @@
 =  VeraCryptをzuluCryptで
 Kenichiro Matohara(matoken) <maroken@kagolug.org>
-:revnumber: 0.9
+:revnumber: 1.0
 :revdate: 2021-01-01(Sat)
 :revremark: 小江戸らぐ 01月のオフな集まり「{doctitle}」
 :homepage: https://matoken.org/
@@ -65,6 +65,13 @@ link:https://kagolug.connpass.com/event/200913/[鹿児島Linux勉強会 2021.01(
 LinuxではUSBメモリなどの持ち運びデバイスに便利
 
 // CipherShed
+
+=== TrueCryptについては以前も
+
+* link:https://speakerdeck.com/matoken/slax-dean-hao-hua-fs-wochi-tiyun-bu[Slax で暗号化fs を持ち運ぶ]
+** 12月のインストールパーティ in 電大鳩山(20081220)
+** 1 月のオフな集まり　第 78 回(20090110)
+
 
 == VeraCrypt導入例
 
